@@ -1,0 +1,15 @@
+{% extends "trello_app/base.html" %}
+
+{% block content %}
+<div class="container">
+  <h1>リスト詳細</h1>
+  <dl class="row">
+    <dt class="col-sm-3">タイトル</dt>
+    <dd class="col-sm-9">{{ list.title }}</dd>
+    <dt class="col-sm-3">ユーザー名</dt>
+    <dd class="col-sm-9">{{ list.user.username }}</dd>
+  </dl>
+  <a href="{% url 'trello_app:lists_update' list.pk %}" class="btn btn-primary">編集</a>
+  <a href="{% url 'trello_app:lists_delete' list.pk %}" class="btn btn-danger">削除</a>
+</div>
+{% endblock %}
