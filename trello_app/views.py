@@ -7,8 +7,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.views.generic import DetailView, UpdateView, CreateView, ListView, DeleteView
 
-from .forms import UserForm, ListForm
-from .models import List
+from .forms import UserForm, ListForm, CardForm
+from .models import List, Card
 from .mixins import OnlyYouMixin
 
 
@@ -79,3 +79,36 @@ class ListDeleteView(LoginRequiredMixin, DeleteView):
   template_name = 'trello_app/lists/delete.html'
   form_class = ListForm
   success_url = reverse_lazy('trello_app:lists_list')
+
+class CardCreateView(LoginRequiredMixin, CreateView):
+  model = Card
+  template_name = 'trello_app/cards/create.html'
+  form_class = CardForm
+  success_url = reverse_lazy('trello_app:cards_list')
+
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    return super().form_valid(form)
+
+class CardListView(LoginRequiredMixin, ListView):
+  model = Card
+  template_name = 'trello_app/cards/list.html'
+  
+
+class CardDetailView(LoginRequiredMixin, DetailView):
+  model = Card
+  template_name = 'trello_app/cards/detail.html'
+
+class CardUpdateView(LoginRequiredMixin,UpdateView):
+  model = Card
+  template_name = "trello_app/cards/update.html"
+  form_class = CardForm
+# resolve_url 正常ならusers_detaiに接続する.pkはDBのpk
+  def get_success_url(self):
+    return resolve_url('trello_app:cards_list')
+
+class CardDeleteView(LoginRequiredMixin, DeleteView):
+  model = Card
+  template_name = 'trello_app/cards/delete.html'
+  form_class = CardForm
+  success_url = reverse_lazy('trello_app:cards_list')
