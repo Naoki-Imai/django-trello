@@ -12,14 +12,12 @@ from .models import List, Card
 from .mixins import OnlyYouMixin
 
 
+
 # Create your views here.
 def index(request):
   return render(request, "trello_app/index.html")
 
 #ログインしたらhomeへリダイレクトする
-@login_required
-def home(request):
-  return render(request, "trello_app/home.html")
 
 def signup(request):
   if request.method == 'POST':
@@ -35,6 +33,11 @@ def signup(request):
     "form":form
   }
   return render(request, 'trello_app/signup.html', context)
+
+# @login_required
+class HomeView(LoginRequiredMixin, ListView):
+  model = List
+  template_name = "trello_app/home.html"
 
 class UserDetailView(LoginRequiredMixin, DetailView):
   model = User
