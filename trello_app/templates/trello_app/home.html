@@ -1,16 +1,10 @@
 {% extends "trello_app/base.html" %}
 
 {% block content %}
-<style>
-  body {
-    padding-top: 70px;
-  }
-</style>
-
-<div class="container-fluid" style="display: table-cell !important">
+<div class="container-fluid home">
   <div class="row flex-nowrap">
     {% for list in list_list%}
-      <div class="bg-light m-3 p-2" style="width: 240px; height: 100%">
+      <div class="bg-light m-3 p-2 list">
         <h4>{{ list.title }}
           <a href="{% url 'trello_app:lists_update' list.pk %}" class="text-dark"><i class="bi bi-brush"></i></a>
           <a href="{% url 'trello_app:lists_delete' list.pk %}" class="text-danger"><i class="bi bi-x-square bi-xs"></i></a>
@@ -25,7 +19,7 @@
           </div>
         </a>
         {% endfor %}
-        <a href="{% url 'trello_app:cards_create' %}" class="text-dark"><i class="bi bi-clipboard-plus"></i> さらにカードを追加</a>
+        <a href="{% url 'trello_app:cards_create_from_home' list.pk %}" class="text-dark"><i class="bi bi-clipboard-plus"></i> さらにカードを追加</a>
       </div>
     {% endfor %}
   </div>
